@@ -138,15 +138,15 @@ def process_rtt(path):
     
 
 
-#path='./exp/cse_building/static/level3/'    
-#process_rtt(path)
+path='./exp/cse_building/static/level3/'    
+process_rtt(path)
 
 
 #path='./exp/cse_building/static/level1/'    
 #process_rtt(path)
 
-path='./exp/placeA/static/level1/'    #1m: first 2min05s opo data needs discard
-process_rtt(path)
+#path='./exp/placeA/static/level1/'    #1m: first 2min05s opo data needs discard
+#process_rtt(path)
 
 #path='./exp/placeA/static/level3/'    #1m: first 2min05s opo data needs discard
 #process_rtt(path)

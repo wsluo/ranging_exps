@@ -30,3 +30,9 @@ sudo vim patlab_robot_pose_ekf.launch
 
 roscd kobuki_node
 roscd turtlebot_bringup
+
+
+Figure 5.8 shows the error of marker increases linearly with distances
+https://era.library.ualberta.ca/items/d9054560-c8da-4d7c-bbe9-ec96bec49e0e/view/d4b07826-d6d5-4cb6-8f88-95dbd4e1f795/Scheideman_Sean_201909_MSc.pdf
+
+

@@ -220,11 +220,11 @@ def align_rtt(opo,tag1,tag2,bot1,bot2,h_offset, ul_count_cutoff):
     bot1_interp_x,bot1_interp_y = bot1_interp_x_f(interp_sample_timestamps),bot1_interp_y_f(interp_sample_timestamps)
     bot2_interp_x,bot2_interp_y = bot2_interp_x_f(interp_sample_timestamps),bot2_interp_y_f(interp_sample_timestamps)
     
-    #bot1_interp_yaws = bot1_interp_yaws_f(interp_sample_timestamps,bot1_interp_yaws_f(interp_sample_timestamps))
-    #bot2_interp_yaws = bot2_interp_yaws_f(interp_sample_timestamps,bot2_interp_yaws_f(interp_sample_timestamps))
+    bot1_interp_yaws = bot1_interp_yaws_f(interp_sample_timestamps)
+    bot2_interp_yaws = bot2_interp_yaws_f(interp_sample_timestamps)
 
     interp_groundtruth = [dist([bot1_interp_x[i],bot1_interp_y[i]], [bot2_interp_x[i],bot2_interp_y[i]-h_offset]) for i in range(len(interp_sample_timestamps))]
-    #relative_yaws = [bot2_interp_yaws[i]-bot1_interp_yaws[i] for i in range(len(interp_sample_timestamps))]
+    relative_yaws = [bot2_interp_yaws[i]-bot1_interp_yaws[i] for i in range(len(interp_sample_timestamps))]
     
     #calcualte opo error
     bot1_opo_moments_x, bot1_opo_moments_y = bot1_interp_x_f(opo_moments),bot1_interp_y_f(opo_moments)
@@ -234,7 +234,7 @@ def align_rtt(opo,tag1,tag2,bot1,bot2,h_offset, ul_count_cutoff):
     
     bot1_opo_moments_yaws = bot1_interp_yaws_f(opo_moments)
     bot2_opo_moments_yaws = bot2_interp_yaws_f(opo_moments)
-    relative_yaws_opo_moments = [bot2_opo_moments_yaws[i]-bot1_opo_moments_yaws[i] for i in range(len(opo_moments))]
+    #relative_yaws_opo_moments = [bot2_opo_moments_yaws[i]-bot1_opo_moments_yaws[i] for i in range(len(opo_moments))]
     
     #calculate tottag error
     bot1_tottag_moments_x, bot1_tottag_moments_y = bot1_interp_x_f(tottag_moments),bot1_interp_y_f(tottag_moments)
@@ -244,7 +244,9 @@ def align_rtt(opo,tag1,tag2,bot1,bot2,h_offset, ul_count_cutoff):
     
     bot1_tottag_moments_yaws = bot1_interp_yaws_f(tottag_moments)
     bot2_tottag_moments_yaws = bot2_interp_yaws_f(tottag_moments)
-    relative_yaws_tottag_moments = [bot2_tottag_moments_yaws[i]-bot1_tottag_moments_yaws[i] for i in range(len(tottag_moments))]
+    #relative_yaws_tottag_moments = [bot2_tottag_moments_yaws[i]-bot1_tottag_moments_yaws[i] for i in range(len(tottag_moments))]
+    
+    interp_sample_timestamps_offset=[x-interval_min for x in interp_sample_timestamps]
     
     fig, (ax1,ax2,ax3) = plt.subplots(3)
     #plot opo error vs bot yaw
@@ -253,8 +255,8 @@ def align_rtt(opo,tag1,tag2,bot1,bot2,h_offset, ul_count_cutoff):
     ax1.scatter(opo_moments_offset,opo_error,color='tab:red',s=6)
     ax1.set_ylabel("Error (m)",color='tab:red',fontsize=12)
     ax1_twin=ax1.twinx()
-    ax1_twin.plot(opo_moments_offset,relative_yaws_opo_moments,color='tab:blue')
-    ax1_twin.scatter(opo_moments_offset,relative_yaws_opo_moments,color='tab:blue',s=6)
+    ax1_twin.plot(interp_sample_timestamps_offset,relative_yaws,color='tab:blue')
+    #ax1_twin.scatter(interp_sample_timestamps_offset,relative_yaws,color='tab:blue',s=6)
     ax1_twin.set_ylabel("Relative Yaw",color='tab:blue',fontsize=12)
     ax1.title.set_text('Opo Error')
     #plot tottag error vs bot yaw
@@ -263,13 +265,13 @@ def align_rtt(opo,tag1,tag2,bot1,bot2,h_offset, ul_count_cutoff):
     ax2.scatter(tottag_moments_offset,tottag_error,color='tab:red',s=6)
     ax2.set_ylabel("Error (m)",color='tab:red',fontsize=12)
     ax2_twin=ax2.twinx()
-    ax2_twin.plot(tottag_moments_offset,relative_yaws_tottag_moments,color='tab:blue')
-    ax2_twin.scatter(tottag_moments_offset,relative_yaws_tottag_moments,color='tab:blue',s=6)
+    ax2_twin.plot(interp_sample_timestamps_offset,relative_yaws,color='tab:blue')
+    #ax2_twin.scatter(interp_sample_timestamps_offset,relative_yaws,color='tab:blue',s=6)
     ax2_twin.set_ylabel("Relative Yaw",color='tab:blue',fontsize=12)
     ax2.title.set_text('Tottag Error')
     #plot opo, tottag vs ground truth
     ax3.set_xlim([0, interval_max-interval_min])
-    ax3.plot([x-interval_min for x in interp_sample_timestamps],interp_groundtruth,label='ground truth',color='#1f77b4')
+    ax3.plot(interp_sample_timestamps_offset,interp_groundtruth,label='ground truth',color='#1f77b4')
     ax3.scatter(opo_moments_offset,opo_dist_opo_moments, label='opo',s=20,color='#ff7f0e')
     ax3.scatter(tottag_moments_offset,tottag_dist_tottag_moments,label='tottag',s=6,color='g')
     ax3.set_xlabel('Time (s)')
