@@ -1,0 +1,29 @@
+python free_nav.py -i clock2 -t 1639436700
+python free_nav.py -i counter2 -t 1639436700
+
+2021_12_13-03_03_45_PM_clock2
+
+2021_12_13-03_03_54_PM_counter2
+
+29@12-13.LOG
+2C@12-13.LOG
+
+
+path='./exp/cse_building/level1_run2/'
+allfiles=os.listdir(path)
+opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
+tottag=path+"2C@12-13.LOG"
+bot1=path+"2021_12_13-03_03_45_PM_clock2"
+bot2=path+"2021_12_13-03_03_54_PM_counter2"
+
+LINEAR_VELOCITY_MINIMUM_THRESHOLD  = 0.1
+ANGULAR_VELOCITY_MINIMUM_THRESHOLD = 0.4
+
+LINEAR_ACC = 0.2
+LINEAR_DEC = 0.6
+
+ANG_ACC = 0.2
+ANG_DEC = 0.5
+
+ANGULAR_SPEED=1
+LINEAR_SPEED=0.65

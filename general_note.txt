@@ -1,0 +1,53 @@
+python free_nav.py -i clock2 -t 1639449030
+python free_nav.py -i counter2 -t 1639449030
+
+0.3715
+
+0.3620
+
+
+JLinkRTTClient -RTTTelnetPort 9201 |  ts '%.s' | tee ~/patlab/data/rtt.log
+
+#already in the directory
+scp turtlebot@192.168.1.2:~/patlab/data/2021_12_13-10_34_01_AM_clock2 .
+scp turtlebot@192.168.1.4:~/patlab/data/2021_12_13-10_34_10_AM_counter2 .
+scp turtlebot@192.168.1.2:~/patlab/data/2021_12_13-11_11_56_AM_clock2 .
+scp turtlebot@192.168.1.4:~/patlab/data//2021_12_13-11_12_09_AM_counter2 .
+scp turtlebot@192.168.1.2:~/patlab/data/2021_12_13-03_03_45_PM_clock2 .
+scp turtlebot@192.168.1.4:~/patlab/data/2021_12_13-03_03_54_PM_counter2 .
+scp turtlebot@192.168.1.2:~/patlab/data/2021_12_13-06_30_05_PM_clock2 .
+scp turtlebot@192.168.1.4:~/patlab/data/2021_12_13-06_30_16_PM_counter2 .
+
+scp turtlebot@192.168.1.2:~/patlab/data/2021_12_14-06_11_03_AM_clock2 .
+scp turtlebot@192.168.1.4:~/patlab/data/2021_12_14-06_11_12_AM_counter2 .
+
+
+scp turtlebot@192.168.1.2:~/patlab/data/2021_12_14-01_00_38_PM_circle_clock1 .
+
+scp turtlebot@192.168.1.2:~/patlab/data/2021_12_14-03_05_25_PM_circle_clock1 .
+
+scp turtlebot@192.168.1.2:~/patlab/data/2021_12_15-09_36_35_AM_clock2 .
+scp turtlebot@192.168.1.4:~/patlab/data/2021_12_15-09_36_42_AM_counter2 .
+
+scp turtlebot@192.168.1.2:~/patlab/data/2021_12_28-12_37_27_AM_clock2 .
+scp turtlebot@192.168.1.4:~/patlab/data/2021_12_28-12_37_35_AM_counter2 .
+
+
+
+2.004m
+3.000m
+4.998m
+
+7.000m 692
+5.00?m 505
+
+
+error
+L bot: 
+clock2 (200s,100s): ~10cm x  (actual vs odometry)
+line1 (50s):~ 4 cm y
+
+R bot:
+clock2 (200s): ~10cm x   (actual vs odometry)
+line1 (50s): <1 cm x, 1cm y 
+

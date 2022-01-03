@@ -1,0 +1,3 @@
+python free_nav.py -i clock2 -t 1639420500
+python free_nav.py -i counter2 -t   1639420500
+

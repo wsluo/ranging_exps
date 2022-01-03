@@ -1,0 +1,18 @@
+python free_nav.py -i clock2 -t 1639422750
+python free_nav.py -i counter2 -t 1639422750
+
+timestamp seems to be wrong on tottag?
+2A: only three cycle?
+2C: mostly 999999
+
+LINEAR_VELOCITY_MINIMUM_THRESHOLD  = 0.1
+ANGULAR_VELOCITY_MINIMUM_THRESHOLD = 0.4
+
+LINEAR_ACC = 0.2
+LINEAR_DEC = 0.6
+
+ANG_ACC = 0.2
+ANG_DEC = 0.5
+
+ANGULAR_SPEED=1
+LINEAR_SPEED=0.65

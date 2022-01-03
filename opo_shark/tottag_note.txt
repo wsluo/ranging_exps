@@ -1,0 +1,27 @@
+void ab1815_printTime(ab1815_time_t time)
+{
+   printf("INFO: Time is %02u:%02u:%02u, 20%02u/%02u/%02u\n", time.hours, time.minutes, time.seconds, time.years, time.months, time.date);
+}
+#endif  // #if (BOARD_V >= 0x0F)
+
+uint8_t ab1815_init_time(void){
+取得屏幕时间储存在comp_time中
+return ab1815_set_time(comp_time);
+}
+
+
+
+
+// Initialize time
+success = (success && ab1815_init_time());
+
+// Set nRF time from the RTC
+ab1815_time_t time = { 0 };
+success = (success && ab1815_get_time(&time));
+if (success)
+{
+  rtc_set_current_time(ab1815_to_unix(time).tv_sec);
+  ab1815_printTime(time);
+}
+   
+   

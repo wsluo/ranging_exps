@@ -1,0 +1,32 @@
+### TODO
+
+enlarge opo range ? (current: 30ms -10ms: about 6m)    CHANGED TO 30ms - 5 ms.
+
+further reduce tottag output? 
+
+
+ekf freq too low?    roscd robot_pose_ekf , change freq to higher does not help?
+
+what's wrong with tee? freeze???
+
+
+
+rostopic echo -n1 /odom
+rostopic echo -n1 /robot_pose_ekf/odom_combined
+rostopic echo -n1 /tf
+
+gui debug:
+ssh -Y turtlebot@
+rosrun rqt_logger_level rqt_logger_level
+rqt_console
+
+
+
+roscd robot_pose_ekf
+sudo vim patlab_robot_pose_ekf.launch
+
+
+
+
+roscd kobuki_node
+roscd turtlebot_bringup
