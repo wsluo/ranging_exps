@@ -12,7 +12,10 @@ from scipy.interpolate import interp1d
 import numpy as np
 
 #h_offset=0.3625 #right robot from left robot. used for horizontal translation
-
+def cdf(x, plot=True, *args, **kwargs):
+    x, y = sorted(x), np.arange(len(x)) / len(x)
+    return plt.plot(x, y, *args, **kwargs) if plot else (x, y)
+    
 def dist(a,b):
     return math.sqrt( (a[0]-b[0])**2 + (a[1]-b[1])**2 )
 
@@ -284,6 +287,13 @@ def align_rtt(opo,tag1,tag2,bot1,bot2,h_offset, ul_count_cutoff):
 
     plt.scatter([a[0]-interval_min for a in tottag_rssi],[a[1] for a in tottag_rssi])
     plt.show()
+    
+    #plt.hist(opo_error, cumulative=True, label='opo error CDF', histtype='step', alpha=0.8)
+    cdf([abs(x) for x in opo_error],label='opo error CDF')
+    cdf([abs(x) for x in tottag_error],label='tottag error CDF')         
+    plt.savefig(path+'error_cdf.png')
+    plt.legend()
+    plt.show()
 
 def process_rtt(path, exp_type, offset, ul_count_cutoff=40):
     allfiles=os.listdir(path)
@@ -377,7 +387,7 @@ align_rtt(opo,tag1,tag2,bot1,bot2,0.3715)
 
 
 #path='./exp/cse_building/level3_rtt_run1/' #this run, the opo monitor starts a bit later
-#process_rtt(path,'clock_counter_2',0.3725)
+#process_rtt(path,'clock_counter_2',0.3725,ul_count_cutoff=40)
 
     
 
@@ -454,8 +464,8 @@ align_rtt(opo,tag1,tag2,bot1,bot2,0.3715)
 #path='./exp/placeA/level3_rtt_run7/' #another junk
 #process_rtt(path,'clock_counter_2',0.3630,ul_count_cutoff=40)
 
-path='./exp/placeA/level3_rtt_run8/' #more data
-process_rtt(path,'clock_counter_2',0.3785,ul_count_cutoff=40)
+#path='./exp/placeA/level3_rtt_run8/' #more data
+#process_rtt(path,'clock_counter_2',0.3785,ul_count_cutoff=40)
 #0.3785
 
 ## TODO  fix the right tottag? which always disconnect when moving

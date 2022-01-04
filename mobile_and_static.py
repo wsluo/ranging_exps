@@ -13,6 +13,9 @@ import numpy as np
 
 from mobile_experiment import dist
 
+def cdf(x, plot=True, *args, **kwargs):
+    x, y = sorted(x), np.arange(len(x)) / len(x)
+    return plt.plot(x, y, *args, **kwargs) if plot else (x, y)
 
 def align(opo,tottag,bot1,fixed_point, magic):
     opo_log = get_range_and_ul_count(opo) #[t,name,range_dt,ul_count, dist] note: rx only
@@ -202,6 +205,16 @@ def align_rtt(opo,tag1,tag2,bot1,fixed_point, ul_count_cutoff):
     plt.savefig(path+'aligned.png')
     plt.show()
     
+    plt.scatter([a[0]-interval_min for a in tottag_rssi],[a[1] for a in tottag_rssi])
+    plt.show()
+    
+    #plt.hist(opo_error, cumulative=True, label='opo error CDF', histtype='step', alpha=0.8)
+    cdf([abs(x) for x in opo_error],label='opo error CDF')
+    cdf([abs(x) for x in tottag_error],label='tottag error CDF')         
+    plt.savefig(path+'error_cdf.png')
+    plt.legend()
+    plt.show()
+    
 def process_rtt(path, exp_type, fixed_point, ul_count_cutoff=40):
     allfiles=os.listdir(path)
     
@@ -351,5 +364,5 @@ process_rtt(path, 'sideline2', [0,-0.3780], ul_count_cutoff=65)
 #path='./exp/placeA/level3_circle1_rtt_run4/'     ##missing some tottag data
 #process_rtt(path, 'circle_clock1', [0,-0.3780], ul_count_cutoff=65) 
 
-path='./exp/placeA/level3_circle1_rtt_run6/'     ##missing some tottag data
-process_rtt(path, 'circle_clock1', [0,-0.3615], ul_count_cutoff=65) 
+#path='./exp/placeA/level3_circle1_rtt_run6/'     ##missing some tottag data
+#process_rtt(path, 'circle_clock1', [0,-0.3615], ul_count_cutoff=65) 
