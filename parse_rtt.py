@@ -55,7 +55,7 @@ def get_raw_rtt(filename):
                 i+=3
             except:
                 i+=1
-                print('cannot parse:'+line)
+                #print('cannot parse:'+line)
                 continue
 
     #due to buffer issues, there might be repeated entries??? 

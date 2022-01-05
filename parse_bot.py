@@ -32,7 +32,7 @@ def get_log(filename):
                 log.append([timestamp,[x,y],[q_x,q_y,q_z,q_w]])
                 #print(decimal.Decimal.from_float(timestamp))
             except:
-                print(line,"PARSING ERROR!!!")
+                #print(line,"PARSING ERROR!!!")
                 continue  
         return log
 

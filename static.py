@@ -124,6 +124,7 @@ def process_rtt(path):
     ax1.scatter(concat_rssi_time,concat_rssi_val,s=2)
     ax2.scatter(concat_raw_time,concat_raw_dist,s=2,label='Tottag')
     ax2.scatter(concat_opo_time,concat_opo_dist,s=2,label='Opo')
+    ax2.legend()
     ax3.scatter(concat_opo_time,concat_opo_ul_count,s=2,label='ul_count')
     ax1.set_xlabel('time (s)')
     ax1.set_ylabel('RSSI')
