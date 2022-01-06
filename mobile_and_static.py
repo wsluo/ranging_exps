@@ -79,10 +79,26 @@ def align(opo,tottag,bot1,fixed_point, magic):
     plt.ylabel('Distance (m)')
     plt.legend()
     plt.savefig(path+'aligned.png')
-    plt.show()
+    plt.show()    
     
+def process_rtt(path, exp_type, fixed_point, ul_count_cutoff=40):
+    allfiles=os.listdir(path)
     
-def align_rtt(opo,tag1,tag2,bot1,fixed_point, ul_count_cutoff):
+    opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
+
+    tag1=path+[f for f in allfiles if f.startswith('rtt_')][0]
+    tag2=path+[f for f in allfiles if f.startswith('rtt2_')][0]
+    
+    print(tag1,tag2)
+    
+    if exp_type == 'circle_clock1':
+        bot1=path+[f for f in allfiles if f.endswith('circle_clock1')][0]
+    if exp_type == 'sideline2':
+        bot1=path+[f for f in allfiles if f.endswith('sideline2')][0]
+        
+        
+    #align_rtt(opo,tag1,tag2,bot1,fixed_point, ul_count_cutoff)
+    
     opo_log = get_range_and_ul_count(opo, ul_count_cutoff) #[t,name,range_dt,ul_count, dist] note: rx only
     
     raw1=get_raw_rtt(tag1)
@@ -110,7 +126,7 @@ def align_rtt(opo,tag1,tag2,bot1,fixed_point, ul_count_cutoff):
     interval_min=max(min(bot1_stamps),min(opo_stamps),min(tottag_stamps))
     interval_max=min(max(bot1_stamps),max(opo_stamps),max(tottag_stamps))
     
-   # print('opo delay:',min(opo_stamps)-min(bot1_stamps))
+    # print('opo delay:',min(opo_stamps)-min(bot1_stamps))
 
     print('min, max, interval for timestamps:',interval_min,interval_max,interval_max-interval_min)
 
@@ -206,163 +222,153 @@ def align_rtt(opo,tag1,tag2,bot1,fixed_point, ul_count_cutoff):
     plt.show()
     
     plt.scatter([a[0]-interval_min for a in tottag_rssi],[a[1] for a in tottag_rssi])
+    plt.title('RSSI')
+    plt.xlabel('Time (s)')
     plt.show()
     
     #plt.hist(opo_error, cumulative=True, label='opo error CDF', histtype='step', alpha=0.8)
     cdf([abs(x) for x in opo_error],label='opo error CDF')
-    cdf([abs(x) for x in tottag_error],label='tottag error CDF')         
+    cdf([abs(x) for x in tottag_error],label='tottag error CDF')    
+    plt.xlabel('Absolute Error (m)')     
     plt.savefig(path+'error_cdf.png')
     plt.legend()
-    plt.show()
+    plt.show()    
     
-def process_rtt(path, exp_type, fixed_point, ul_count_cutoff=40):
+def main():
+    '''
+    #for this experiment, the wireshark is delayed  
+    path='./exp/cse_building/level3_circle1_run1/'
     allfiles=os.listdir(path)
-    
     opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
+    tottag=path+"2C@12-14.LOG" #2C: -166? 29: -140?
+    bot1=path+"2021_12_14-01_00_38_PM_circle_clock1"
+    align(opo,tottag,bot1,[0,-0.3625],-166)
+    '''
 
-    tag1=path+[f for f in allfiles if f.startswith('rtt_')][0]
-    tag2=path+[f for f in allfiles if f.startswith('rtt2_')][0]
-    
-    print(tag1,tag2)
-    
-    if exp_type == 'circle_clock1':
-        bot1=path+[f for f in allfiles if f.endswith('circle_clock1')][0]
-    if exp_type == 'sideline2':
-        bot1=path+[f for f in allfiles if f.endswith('sideline2')][0]
-        
-        
-    align_rtt(opo,tag1,tag2,bot1,fixed_point, ul_count_cutoff)
-    
-'''
-#for this experiment, the wireshark is delayed  
-path='./exp/cse_building/level3_circle1_run1/'
-allfiles=os.listdir(path)
-opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
-tottag=path+"2C@12-14.LOG" #2C: -166? 29: -140?
-bot1=path+"2021_12_14-01_00_38_PM_circle_clock1"
-align(opo,tottag,bot1,[0,-0.3625],-166)
-'''
+    '''
+    path='./exp/cse_building/level3_circle1_run2/'
+    allfiles=os.listdir(path)
+    opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
+    tottag=path+"29@12-14.LOG" #29: -18? 
+    bot1=path+"2021_12_14-03_05_25_PM_circle_clock1"
+    align(opo,tottag,bot1,[0,-0.364],-18)
+    '''
+    '''
+    path='./exp/cse_building/level3_circle1_rtt_run1/'
+    process_rtt(path, 'circle_clock1', [0,-0.3775], ul_count_cutoff=65)
+    '''
+    '''   
+    path='./exp/cse_building/level3_sideline2_rtt_run1/'
+    process_rtt(path, 'sideline2', [0,-0.3625], ul_count_cutoff=65)
+    '''
+    '''    
+    path='./exp/cse_building/level3_sideline2_rtt_run2_wrong/' # not a line...
+    process_rtt(path, 'sideline2', [0,-0.3780], ul_count_cutoff=65)
+    '''
+    '''  
+    path='./exp/cse_building/level3_sideline2_rtt_run2/'
+    process_rtt(path, 'sideline2', [0,-0.3700], ul_count_cutoff=65)  
+    '''
 
-'''
-path='./exp/cse_building/level3_circle1_run2/'
-allfiles=os.listdir(path)
-opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
-tottag=path+"29@12-14.LOG" #29: -18? 
-bot1=path+"2021_12_14-03_05_25_PM_circle_clock1"
-align(opo,tottag,bot1,[0,-0.364],-18)
-'''
-'''
-path='./exp/cse_building/level3_circle1_rtt_run1/'
-process_rtt(path, 'circle_clock1', [0,-0.3775], ul_count_cutoff=65)
-'''
-'''   
-path='./exp/cse_building/level3_sideline2_rtt_run1/'
-process_rtt(path, 'sideline2', [0,-0.3625], ul_count_cutoff=65)
-'''
-'''    
-path='./exp/cse_building/level3_sideline2_rtt_run2_wrong/' # not a line...
-process_rtt(path, 'sideline2', [0,-0.3780], ul_count_cutoff=65)
-'''
-'''  
-path='./exp/cse_building/level3_sideline2_rtt_run2/'
-process_rtt(path, 'sideline2', [0,-0.3700], ul_count_cutoff=65)  
-'''
+    '''   
+    path='./exp/cse_building/level3_sideline2_rtt_run3/'
+    process_rtt(path, 'sideline2', [0,-0.3725], ul_count_cutoff=65)    
+    '''
 
-'''   
-path='./exp/cse_building/level3_sideline2_rtt_run3/'
-process_rtt(path, 'sideline2', [0,-0.3725], ul_count_cutoff=65)    
-'''
+    '''
+    path='./exp/cse_building/level3_sideline2_rtt_run4/'
+    process_rtt(path, 'sideline2', [0,-0.3780], ul_count_cutoff=65)  
+    ''' 
+    #path='./exp/cse_building/level1_circle1_rtt_run1/'    
+    #process_rtt(path, 'circle_clock1', [0,-0.3680], ul_count_cutoff=65)   
 
-'''
-path='./exp/cse_building/level3_sideline2_rtt_run4/'
-process_rtt(path, 'sideline2', [0,-0.3780], ul_count_cutoff=65)  
-''' 
-#path='./exp/cse_building/level1_circle1_rtt_run1/'    
-#process_rtt(path, 'circle_clock1', [0,-0.3680], ul_count_cutoff=65)   
+    #path='./exp/cse_building/level1_circle1_rtt_run2/'
+    #process_rtt(path, 'circle_clock1', [0,-0.3635], ul_count_cutoff=65) 
 
-#path='./exp/cse_building/level1_circle1_rtt_run2/'
-#process_rtt(path, 'circle_clock1', [0,-0.3635], ul_count_cutoff=65) 
-
-#path='./exp/cse_building/level1_circle1_rtt_run3/'
-#process_rtt(path, 'circle_clock1', [0,-0.3730], ul_count_cutoff=65)
+    #path='./exp/cse_building/level1_circle1_rtt_run3/'
+    #process_rtt(path, 'circle_clock1', [0,-0.3730], ul_count_cutoff=65)
 
 
-#path='./exp/cse_building/level1_sideline2_rtt_run1/'
-#process_rtt(path, 'sideline2', [0,-0.3785], ul_count_cutoff=65)
+    #path='./exp/cse_building/level1_sideline2_rtt_run1/'
+    #process_rtt(path, 'sideline2', [0,-0.3785], ul_count_cutoff=65)
 
 
-#path='./exp/cse_building/level1_sideline2_rtt_run2/'
-#process_rtt(path, 'sideline2', [0,-0.3805], ul_count_cutoff=65)
+    #path='./exp/cse_building/level1_sideline2_rtt_run2/'
+    #process_rtt(path, 'sideline2', [0,-0.3805], ul_count_cutoff=65)
 
-#path='./exp/cse_building/level1_sideline2_rtt_run3/'
-#process_rtt(path, 'sideline2', [0,-0.3780], ul_count_cutoff=65)
+    #path='./exp/cse_building/level1_sideline2_rtt_run3/'
+    #process_rtt(path, 'sideline2', [0,-0.3780], ul_count_cutoff=65)
 
-#path='./exp/cse_building/level1_sideline2_rtt_run4/'
-#process_rtt(path, 'sideline2', [0,-0.3755], ul_count_cutoff=65)
-
-
-#path='./exp/placeA/level1_sideline2_rtt_run1/'
-#process_rtt(path, 'sideline2', [0,-0.3732], ul_count_cutoff=65)
-#0.3732
-
-#path='./exp/placeA/level1_sideline2_rtt_run2/'
-#process_rtt(path, 'sideline2', [0,-0.3715], ul_count_cutoff=65)
+    #path='./exp/cse_building/level1_sideline2_rtt_run4/'
+    #process_rtt(path, 'sideline2', [0,-0.3755], ul_count_cutoff=65)
 
 
-#path='./exp/placeA/level1_sideline2_rtt_run3/' #missing late rssi
-#process_rtt(path, 'sideline2', [0,-0.3760], ul_count_cutoff=65)
-#0.3760
+    #path='./exp/placeA/level1_sideline2_rtt_run1/'
+    #process_rtt(path, 'sideline2', [0,-0.3732], ul_count_cutoff=65)
+    #0.3732
 
-#path='./exp/placeA/level1_sideline2_rtt_run4/' #missing late rssi
-#process_rtt(path, 'sideline2', [0,-0.3707], ul_count_cutoff=65)
-#0.3707
-
-#path='./exp/placeA/level1_sideline2_rtt_run5/' #missing late rssi
-#process_rtt(path, 'sideline2', [0,-0.3707], ul_count_cutoff=65)
+    #path='./exp/placeA/level1_sideline2_rtt_run2/'
+    #process_rtt(path, 'sideline2', [0,-0.3715], ul_count_cutoff=65)
 
 
-#path='./exp/placeA/level1_circle1_rtt_run1/'    
-#process_rtt(path, 'circle_clock1', [0,-0.3755], ul_count_cutoff=65)  
-#0.3755
+    #path='./exp/placeA/level1_sideline2_rtt_run3/' #missing late rssi
+    #process_rtt(path, 'sideline2', [0,-0.3760], ul_count_cutoff=65)
+    #0.3760
 
-#path='./exp/placeA/level1_circle1_rtt_run2/'    
-#process_rtt(path, 'circle_clock1', [0,-0.3630], ul_count_cutoff=65) 
+    #path='./exp/placeA/level1_sideline2_rtt_run4/' #missing late rssi
+    #process_rtt(path, 'sideline2', [0,-0.3707], ul_count_cutoff=65)
+    #0.3707
+
+    #path='./exp/placeA/level1_sideline2_rtt_run5/' #missing late rssi
+    #process_rtt(path, 'sideline2', [0,-0.3707], ul_count_cutoff=65)
+
+
+    #path='./exp/placeA/level1_circle1_rtt_run1/'    
+    #process_rtt(path, 'circle_clock1', [0,-0.3755], ul_count_cutoff=65)  
+    #0.3755
+
+    #path='./exp/placeA/level1_circle1_rtt_run2/'    
+    #process_rtt(path, 'circle_clock1', [0,-0.3630], ul_count_cutoff=65) 
 
 
 
-#0.3630
-#path='./exp/placeA/level1_circle1_rtt_run3/'    
-#process_rtt(path, 'circle_clock1', [0,-0.3770], ul_count_cutoff=65) 
+    #0.3630
+    #path='./exp/placeA/level1_circle1_rtt_run3/'    
+    #process_rtt(path, 'circle_clock1', [0,-0.3770], ul_count_cutoff=65) 
 
-#path='./exp/placeA/level3_sideline2_rtt_run1/'
-#process_rtt(path, 'sideline2', [0,-0.3590], ul_count_cutoff=65)
-
-
-#path='./exp/placeA/level3_sideline2_rtt_run2/'
-#process_rtt(path, 'sideline2', [0,-0.3795], ul_count_cutoff=65)
+    #path='./exp/placeA/level3_sideline2_rtt_run1/'
+    #process_rtt(path, 'sideline2', [0,-0.3590], ul_count_cutoff=65)
 
 
-#path='./exp/placeA/level3_sideline2_rtt_run3/'
-#process_rtt(path, 'sideline2', [0,-0.3735], ul_count_cutoff=65)
-#0.3735
-
-#path='./exp/placeA/level3_sideline2_rtt_run4/'
-#process_rtt(path, 'sideline2', [0,-0.3750], ul_count_cutoff=65)
-#0.3750
+    #path='./exp/placeA/level3_sideline2_rtt_run2/'
+    #process_rtt(path, 'sideline2', [0,-0.3795], ul_count_cutoff=65)
 
 
-#path='./exp/placeA/level3_circle1_rtt_run1/'    
-#process_rtt(path, 'circle_clock1', [0,-0.3725], ul_count_cutoff=65) 
+    #path='./exp/placeA/level3_sideline2_rtt_run3/'
+    #process_rtt(path, 'sideline2', [0,-0.3735], ul_count_cutoff=65)
+    #0.3735
 
-#path='./exp/placeA/level3_circle1_rtt_run2/'    
-#process_rtt(path, 'circle_clock1', [0,-0.3690], ul_count_cutoff=65) 
-#0.3690
+    #path='./exp/placeA/level3_sideline2_rtt_run4/'
+    #process_rtt(path, 'sideline2', [0,-0.3750], ul_count_cutoff=65)
+    #0.3750
 
-#path='./exp/placeA/level3_circle1_rtt_run3/'     ##missing much rssi
-#process_rtt(path, 'circle_clock1', [0,-0.3690], ul_count_cutoff=65) 
 
-#path='./exp/placeA/level3_circle1_rtt_run4/'     ##missing some tottag data
-#process_rtt(path, 'circle_clock1', [0,-0.3780], ul_count_cutoff=65) 
+    #path='./exp/placeA/level3_circle1_rtt_run1/'    
+    #process_rtt(path, 'circle_clock1', [0,-0.3725], ul_count_cutoff=65) 
 
-#path='./exp/placeA/level3_circle1_rtt_run6/'     ##missing some tottag data
-#process_rtt(path, 'circle_clock1', [0,-0.3615], ul_count_cutoff=65) 
+    #path='./exp/placeA/level3_circle1_rtt_run2/'    
+    #process_rtt(path, 'circle_clock1', [0,-0.3690], ul_count_cutoff=65) 
+    #0.3690
+
+    #path='./exp/placeA/level3_circle1_rtt_run3/'     ##missing much rssi
+    #process_rtt(path, 'circle_clock1', [0,-0.3690], ul_count_cutoff=65) 
+
+    #path='./exp/placeA/level3_circle1_rtt_run4/'     ##missing some tottag data
+    #process_rtt(path, 'circle_clock1', [0,-0.3780], ul_count_cutoff=65) 
+
+    path='./exp/placeA/level3_circle1_rtt_run6/'     ##missing some tottag data
+    process_rtt(path, 'circle_clock1', [0,-0.3615], ul_count_cutoff=65)
+
+if __name__ == "__main__":
+   # stuff only to run when not called via 'import' here
+   main()

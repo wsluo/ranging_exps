@@ -26,10 +26,11 @@ def view(route):
 def view_pair(route1,route2):
     X1=[0]+[x[0] for x in route1]
     Y1=[0]+[x[1] for x in route1]
-    plt.plot(X1,Y1)
+    plt.plot(X1,Y1,label='left')
     X2=[0]+[x[0] for x in route2]
     Y2=[0]+[x[1] for x in route2]
-    plt.plot(X2,Y2)
+    plt.plot(X2,Y2,label='right')
+    plt.legend()
     plt.show()
         
 #clockwise1_coordinate=[[0,1,0],[1,1,0],[1,0,0],[0,0,0]]   
@@ -140,3 +141,4 @@ print_waypoints(sideline2)
 #f.write("test"])
 #f.close()
 
+view_pair(clock2, counter2)

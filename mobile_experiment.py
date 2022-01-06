@@ -144,7 +144,25 @@ def align(opo,tottag,bot1,bot2,h_offset, magic):
 #don't forget sudo chmod 777 for wireshark files
 
 
-def align_rtt(opo,tag1,tag2,bot1,bot2,h_offset, ul_count_cutoff):
+#def align_rtt(opo,tag1,tag2,bot1,bot2,h_offset, ul_count_cutoff):
+
+
+def process_rtt(path, exp_type, h_offset, ul_count_cutoff=40):
+    allfiles=os.listdir(path)
+    
+    opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
+
+    tag1=path+[f for f in allfiles if f.startswith('rtt_')][0]
+    tag2=path+[f for f in allfiles if f.startswith('rtt2_')][0]
+    
+    print(tag1,tag2)
+    
+    if exp_type == 'clock_counter_2':
+        bot1=path+[f for f in allfiles if f.endswith('clock2')][0]
+        bot2=path+[f for f in allfiles if f.endswith('counter2')][0]
+        
+    #align_rtt(opo,tag1,tag2,bot1,bot2,offset, ul_count_cutoff)
+    
     opo_log = get_range_and_ul_count(opo,ul_count_cutoff) #[t,name,range_dt,ul_count, dist] note: rx only
 
     #tottag_rssi = get_rssi_rtt(tottag) #[timestamp, rssi, channel]
@@ -286,186 +304,178 @@ def align_rtt(opo,tag1,tag2,bot1,bot2,h_offset, ul_count_cutoff):
     plt.show()
 
     plt.scatter([a[0]-interval_min for a in tottag_rssi],[a[1] for a in tottag_rssi])
+    plt.title('RSSI')
+    plt.xlabel('Time (s)')
     plt.show()
     
     #plt.hist(opo_error, cumulative=True, label='opo error CDF', histtype='step', alpha=0.8)
     cdf([abs(x) for x in opo_error],label='opo error CDF')
-    cdf([abs(x) for x in tottag_error],label='tottag error CDF')         
+    cdf([abs(x) for x in tottag_error],label='tottag error CDF')  
+    plt.xlabel('Absolute Error (m)')         
     plt.savefig(path+'error_cdf.png')
     plt.legend()
     plt.show()
 
-def process_rtt(path, exp_type, offset, ul_count_cutoff=40):
+def main():
+    '''
+    path='./exp/cse_building/level1_run1/'
     allfiles=os.listdir(path)
+    opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
+    tottag=path+"2C@12-13.LOG"
+    bot1=path+"2021_12_13-11_11_56_AM_clock2"
+    bot2=path+"2021_12_13-11_12_09_AM_counter2"
+
+    align(opo,tottag,bot1,bot2,0.3625,-310) #  #2C: -310
+    '''
+  
+    '''
+    path='./exp/cse_building/level1_run2/'
+    allfiles=os.listdir(path)
+    opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
+    tottag=path+"2C@12-13.LOG"
+    bot1=path+"2021_12_13-03_03_45_PM_clock2"
+    bot2=path+"2021_12_13-03_03_54_PM_counter2"
+
+    align(opo,tottag,bot1,bot2,0.3625,3.4) #2C: 3.4
+    '''
+
+    ''' 
+    path='./exp/cse_building/level1_run3/'
+    allfiles=os.listdir(path)
+    opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
+    tottag=path+"29@12-14.LOG"
+    bot1=path+"2021_12_13-06_30_05_PM_clock2"
+    bot2=path+"2021_12_13-06_30_16_PM_counter2"
+
+    align(opo,tottag,bot1,bot2,0.3625,-5)
+    '''
+
+    '''
+    path='./exp/cse_building/level3_run1/' #1639491084
+    allfiles=os.listdir(path)
+    opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
+    tottag=path+"2C@12-14.LOG"
+    bot1=path+"2021_12_14-06_11_03_AM_clock2"
+    bot2=path+"2021_12_14-06_11_12_AM_counter2"
+    align(opo,tottag,bot1,bot2,0.3625,-283.1)
+    '''
+
+    '''
+    path='./exp/cse_building/level3_run2/' #1639491084
+    allfiles=os.listdir(path)
+    opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
+    tottag=path+"29@12-15.LOG"
+    bot1=path+"2021_12_15-09_36_35_AM_clock2"
+    bot2=path+"2021_12_15-09_36_42_AM_counter2"
+    align(opo,tottag,bot1,bot2,0.3640,-11.8)
+    #
+    '''
     
+
+
+    '''  
+    path='./exp/cse_building/level3_run3/'
+    process_rtt(path,'clock_counter_2',0.3715, ul_count_cutoff=40)
+    '''
+    
+    
+    '''
+    allfiles=os.listdir(path) 
     opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
 
-    tag1=path+[f for f in allfiles if f.startswith('rtt_')][0]
-    tag2=path+[f for f in allfiles if f.startswith('rtt2_')][0]
-    
-    print(tag1,tag2)
-    
-    if exp_type == 'clock_counter_2':
-        bot1=path+[f for f in allfiles if f.endswith('clock2')][0]
-        bot2=path+[f for f in allfiles if f.endswith('counter2')][0]
-        
-    align_rtt(opo,tag1,tag2,bot1,bot2,offset, ul_count_cutoff)
+    tag1=path+'rtt.log'
+    tag2=path+'rtt2.log'
 
-'''
-path='./exp/cse_building/level1_run1/'
-allfiles=os.listdir(path)
-opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
-tottag=path+"2C@12-13.LOG"
-bot1=path+"2021_12_13-11_11_56_AM_clock2"
-bot2=path+"2021_12_13-11_12_09_AM_counter2"
-
-align(opo,tottag,bot1,bot2,0.3625,-310) #  #2C: -310
-'''
-  
-'''
-path='./exp/cse_building/level1_run2/'
-allfiles=os.listdir(path)
-opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
-tottag=path+"2C@12-13.LOG"
-bot1=path+"2021_12_13-03_03_45_PM_clock2"
-bot2=path+"2021_12_13-03_03_54_PM_counter2"
-
-align(opo,tottag,bot1,bot2,0.3625,3.4) #2C: 3.4
-'''
-
-''' 
-path='./exp/cse_building/level1_run3/'
-allfiles=os.listdir(path)
-opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
-tottag=path+"29@12-14.LOG"
-bot1=path+"2021_12_13-06_30_05_PM_clock2"
-bot2=path+"2021_12_13-06_30_16_PM_counter2"
-
-align(opo,tottag,bot1,bot2,0.3625,-5)
-'''
-
-'''
-path='./exp/cse_building/level3_run1/' #1639491084
-allfiles=os.listdir(path)
-opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
-tottag=path+"2C@12-14.LOG"
-bot1=path+"2021_12_14-06_11_03_AM_clock2"
-bot2=path+"2021_12_14-06_11_12_AM_counter2"
-align(opo,tottag,bot1,bot2,0.3625,-283.1)
-'''
-
-'''
-path='./exp/cse_building/level3_run2/' #1639491084
-allfiles=os.listdir(path)
-opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
-tottag=path+"29@12-15.LOG"
-bot1=path+"2021_12_15-09_36_35_AM_clock2"
-bot2=path+"2021_12_15-09_36_42_AM_counter2"
-align(opo,tottag,bot1,bot2,0.3640,-11.8)
-#
-'''
-    
+    bot1=path+"2021_12_28-12_37_27_AM_clock2"
+    bot2=path+"2021_12_28-12_37_35_AM_counter2" 
+    align_rtt(opo,tag1,tag2,bot1,bot2,0.3715)
+    '''
 
 
-'''  
-path='./exp/cse_building/level3_run3/'
-process_rtt(path,'clock_counter_2',0.3715, ul_count_cutoff=40)
-'''
-    
-    
-'''
-allfiles=os.listdir(path) 
-opo=path+[f for f in allfiles if f.endswith('.pcapng')][0]
-
-tag1=path+'rtt.log'
-tag2=path+'rtt2.log'
-
-bot1=path+"2021_12_28-12_37_27_AM_clock2"
-bot2=path+"2021_12_28-12_37_35_AM_counter2" 
-align_rtt(opo,tag1,tag2,bot1,bot2,0.3715)
-'''
-
-
-#path='./exp/cse_building/level3_rtt_run1/' #this run, the opo monitor starts a bit later
-#process_rtt(path,'clock_counter_2',0.3725,ul_count_cutoff=40)
+    #path='./exp/cse_building/level3_rtt_run1/' #this run, the opo monitor starts a bit later
+    #process_rtt(path,'clock_counter_2',0.3725,ul_count_cutoff=40)
 
     
 
-#path='./exp/cse_building/level3_rtt_run2/' #in rtt, around 1640895384.917603, repeated entries in raw file? buffer problem?
-#process_rtt(path,'clock_counter_2',0.3620, ul_count_cutoff=40)
+    #path='./exp/cse_building/level3_rtt_run2/' #in rtt, around 1640895384.917603, repeated entries in raw file? buffer problem?
+    #process_rtt(path,'clock_counter_2',0.3620, ul_count_cutoff=40)
 
 
 
-#path='./exp/cse_building/level3_rtt_run3/' #this run, missing many tottag data due to jlink issues
-#process_rtt(path,'clock_counter_2',0.3685,ul_count_cutoff=40)
+    #path='./exp/cse_building/level3_rtt_run3/' #this run, missing many tottag data due to jlink issues
+    #process_rtt(path,'clock_counter_2',0.3685,ul_count_cutoff=40)
 
 
 
-#path='./exp/cse_building/level3_rtt_run4/' 
-#process_rtt(path,'clock_counter_2',0.3770,ul_count_cutoff=57)
+    #path='./exp/cse_building/level3_rtt_run4/' 
+    #process_rtt(path,'clock_counter_2',0.3770,ul_count_cutoff=57)
 
 
    
-#path='./exp/cse_building/level1_rtt_run1/'  ### missing some rssi
-#process_rtt(path,'clock_counter_2',0.3675,ul_count_cutoff=40) 
+    #path='./exp/cse_building/level1_rtt_run1/'  ### missing some rssi
+    #process_rtt(path,'clock_counter_2',0.3675,ul_count_cutoff=40) 
    
-#path='./exp/cse_building/level1_rtt_run2/' 
-#process_rtt(path,'clock_counter_2',0.3805,ul_count_cutoff=40)   
+    #path='./exp/cse_building/level1_rtt_run2/' 
+    #process_rtt(path,'clock_counter_2',0.3805,ul_count_cutoff=40)   
         
-#path='./exp/cse_building/level1_rtt_run3/'  
-#process_rtt(path,'clock_counter_2',0.3675,ul_count_cutoff=40)   
+    #path='./exp/cse_building/level1_rtt_run3/'  
+    #process_rtt(path,'clock_counter_2',0.3675,ul_count_cutoff=40)   
 
-#path='./exp/cse_building/level1_rtt_run4/'  
-#process_rtt(path,'clock_counter_2',0.3705,ul_count_cutoff=40) 
-
-
-#path='./exp/placeA/level1_rtt_run1/' #missing first half tottag data
-#process_rtt(path,'clock_counter_2',0.3615,ul_count_cutoff=40) 
-
-#path='./exp/placeA/level1_rtt_run2/' #sparse tottag data #missing much rssi
-#process_rtt(path,'clock_counter_2',0.3720,ul_count_cutoff=40)     
-
-#path='./exp/placeA/level1_rtt_run3/' #sparse tottag data 
-#process_rtt(path,'clock_counter_2',0.3690,ul_count_cutoff=40)  
-
-#path='./exp/placeA/level1_rtt_run4/' #sparse tottag data 
-#process_rtt(path,'clock_counter_2',0.3670   ,ul_count_cutoff=40) 
-
-#path='./exp/placeA/level1_rtt_run5/'  ### first good run
-#process_rtt(path,'clock_counter_2',0.3630   ,ul_count_cutoff=40) 
-
-#path='./exp/placeA/level1_rtt_run6/'  ### second good run
-#process_rtt(path,'clock_counter_2',0.3770   ,ul_count_cutoff=40) 
-
-#0.3667
-#path='./exp/placeA/level1_rtt_run7/' ### third good run
-#process_rtt(path,'clock_counter_2',0.3667  ,ul_count_cutoff=40) 
+    #path='./exp/cse_building/level1_rtt_run4/'  
+    #process_rtt(path,'clock_counter_2',0.3705,ul_count_cutoff=40) 
 
 
-#path='./exp/placeA/level3_rtt_run1/' #missing many tottag data
-#process_rtt(path,'clock_counter_2',0.3665,ul_count_cutoff=40) 
+    #path='./exp/placeA/level1_rtt_run1/' #missing first half tottag data
+    #process_rtt(path,'clock_counter_2',0.3615,ul_count_cutoff=40) 
 
-#path='./exp/placeA/level3_rtt_run2/' #missing many tottag data
-#process_rtt(path,'clock_counter_2',0.3720,ul_count_cutoff=40)
+    #path='./exp/placeA/level1_rtt_run2/' #sparse tottag data #missing much rssi
+    #process_rtt(path,'clock_counter_2',0.3720,ul_count_cutoff=40)     
 
-#path='./exp/placeA/level3_rtt_run3/' #missing many tottag data
-#process_rtt(path,'clock_counter_2',0.3710,ul_count_cutoff=40)
+    #path='./exp/placeA/level1_rtt_run3/' #sparse tottag data 
+    #process_rtt(path,'clock_counter_2',0.3690,ul_count_cutoff=40)  
 
-#path='./exp/placeA/level3_rtt_run4/' #not many useful data
-#process_rtt(path,'clock_counter_2',0.3770,ul_count_cutoff=40)
-#0.3770
+    #path='./exp/placeA/level1_rtt_run4/' #sparse tottag data 
+    #process_rtt(path,'clock_counter_2',0.3670   ,ul_count_cutoff=40) 
 
-#path='./exp/placeA/level3_rtt_run5/' #not many useful data
-#process_rtt(path,'clock_counter_2',0.3710,ul_count_cutoff=40)
+    #path='./exp/placeA/level1_rtt_run5/'  ### first good run
+    #process_rtt(path,'clock_counter_2',0.3630   ,ul_count_cutoff=40) 
 
-#path='./exp/placeA/level3_rtt_run6/' #junk
-#process_rtt(path,'clock_counter_2',0.3710,ul_count_cutoff=40)
+    #path='./exp/placeA/level1_rtt_run6/'  ### second good run
+    #process_rtt(path,'clock_counter_2',0.3770   ,ul_count_cutoff=40) 
 
-#path='./exp/placeA/level3_rtt_run7/' #another junk
-#process_rtt(path,'clock_counter_2',0.3630,ul_count_cutoff=40)
+    #0.3667
+    #path='./exp/placeA/level1_rtt_run7/' ### third good run
+    #process_rtt(path,'clock_counter_2',0.3667  ,ul_count_cutoff=40) 
 
-#path='./exp/placeA/level3_rtt_run8/' #more data
-#process_rtt(path,'clock_counter_2',0.3785,ul_count_cutoff=40)
-#0.3785
 
-## TODO  fix the right tottag? which always disconnect when moving
+    #path='./exp/placeA/level3_rtt_run1/' #missing many tottag data
+    #process_rtt(path,'clock_counter_2',0.3665,ul_count_cutoff=40) 
+
+    #path='./exp/placeA/level3_rtt_run2/' #missing many tottag data
+    #process_rtt(path,'clock_counter_2',0.3720,ul_count_cutoff=40)
+
+    #path='./exp/placeA/level3_rtt_run3/' #missing many tottag data
+    #process_rtt(path,'clock_counter_2',0.3710,ul_count_cutoff=40)
+
+    #path='./exp/placeA/level3_rtt_run4/' #not many useful data
+    #process_rtt(path,'clock_counter_2',0.3770,ul_count_cutoff=40)
+    #0.3770
+
+    #path='./exp/placeA/level3_rtt_run5/' #not many useful data
+    #process_rtt(path,'clock_counter_2',0.3710,ul_count_cutoff=40)
+
+    #path='./exp/placeA/level3_rtt_run6/' #junk
+    #process_rtt(path,'clock_counter_2',0.3710,ul_count_cutoff=40)
+
+    #path='./exp/placeA/level3_rtt_run7/' #another junk
+    #process_rtt(path,'clock_counter_2',0.3630,ul_count_cutoff=40)
+
+    path='./exp/placeA/level3_rtt_run8/' #more data
+    process_rtt(path,'clock_counter_2',0.3785,ul_count_cutoff=40)
+    #0.3785
+
+    ## TODO  fix the right tottag? which always disconnect when moving
+
+if __name__ == "__main__":
+   # stuff only to run when not called via 'import' here
+   main()

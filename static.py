@@ -70,7 +70,7 @@ def process_rtt(path):
         opo_stamps=[x[0] for x in opo_log]
         
         #only considers intersection, tottag included
-        interval_min=max(min(opo_stamps),min(tottag_stamps))
+        interval_min=max(min(opo_stamps),min(tottag_stamps)+3) #sometimes rtt log at the beginning contains old data
         interval_max=min(max(opo_stamps),max(tottag_stamps))
 
         print('min, max, interval for timestamps:',interval_min,interval_max,interval_max-interval_min)
@@ -88,7 +88,7 @@ def process_rtt(path):
         opo_dist=[a[2]*340/32768.0 for a in opo_log]
         opo_ul_count=[a[3] for a in opo_log]
     
-        '''
+   
         fig, (ax1, ax2) = plt.subplots(2)
         ax1.scatter(rssi_time,rssi_val,s=2)
         ax2.scatter(raw_time,raw_dist,s=2,label='Tottag')
@@ -100,11 +100,11 @@ def process_rtt(path):
         plt.legend()
         plt.tight_layout()
         plt.show()
-        '''
+     
         alldata[distance]={'rssi_time':rssi_time,'rssi_val':rssi_val,'raw_time':raw_time,'raw_dist':raw_dist,'opo_time':opo_time,'opo_dist':opo_dist,'opo_ul_count':opo_ul_count,'interval_min':interval_min,'interval_max':interval_max}
         
     #concat plot
-    concat_rssi_time,concat_rssi_val,concat_raw_time,concat_raw_dist,concat_opo_time,concat_opo_dist,concat_opo_ul_count  = [],[],[],[],[],[],[]
+    concat_rssi_time,concat_rssi_val,concat_raw_time,concat_raw_dist,concat_opo_time,concat_opo_dist,concat_opo_ul_count,concat_opo_error,concat_tag_error  = [],[],[],[],[],[],[],[],[]
     
     start_time=0
     
@@ -116,22 +116,40 @@ def process_rtt(path):
         concat_opo_time+=[x+start_time for x in alldata[distance]['opo_time']]
         concat_opo_dist+=alldata[distance]['opo_dist']
         concat_opo_ul_count+=alldata[distance]['opo_ul_count']
+        concat_opo_error+=[x-float(distance) for x in alldata[distance]['opo_dist']]
+        concat_tag_error+=[x-float(distance) for x in alldata[distance]['raw_dist']]
+        
         
         start_time+=alldata[distance]['interval_max']-alldata[distance]['interval_min'] + 0.5
         
         
-    fig, (ax1, ax2, ax3) = plt.subplots(3)
-    ax1.scatter(concat_rssi_time,concat_rssi_val,s=2)
-    ax2.scatter(concat_raw_time,concat_raw_dist,s=2,label='Tottag')
-    ax2.scatter(concat_opo_time,concat_opo_dist,s=2,label='Opo')
-    ax2.legend()
-    ax3.scatter(concat_opo_time,concat_opo_ul_count,s=2,label='ul_count')
+    fig, axs = plt.subplots(2,2)
+    
+    ax1=axs[0, 0]
+    ax2=axs[0 ,1]
+    ax3=axs[1, 0]
+    ax4=axs[1, 1]
+    
+    ax1.scatter(concat_raw_time,concat_raw_dist,s=2,label='Tottag')
+    ax1.scatter(concat_opo_time,concat_opo_dist,s=2,label='Opo')
+    ax1.legend()
     ax1.set_xlabel('time (s)')
-    ax1.set_ylabel('RSSI')
+    ax1.set_ylabel('Measurement (m)')
+    
+    ax2.scatter(concat_raw_time,concat_tag_error,s=2,label='Tottag')
+    ax2.scatter(concat_opo_time,concat_opo_error,s=2,label='Opo')
+    ax2.legend()
     ax2.set_xlabel('time (s)')
-    ax2.set_ylabel('Measurement (m)')
-    ax3.set_xlabel('time(s)')
-    ax3.set_ylabel('UL count')
+    ax2.set_ylabel('Error (m)')
+    
+    ax3.scatter(concat_rssi_time,concat_rssi_val,s=2)
+    ax3.set_xlabel('time (s)')
+    ax3.set_ylabel('RSSI')
+    
+    ax4.scatter(concat_opo_time,concat_opo_ul_count,s=2,label='ul_count')
+    ax4.set_xlabel('time(s)')
+    ax4.set_ylabel('UL count')
+       
     plt.legend()
     plt.tight_layout()
     plt.savefig(path+'aligned_concat.png')
@@ -139,15 +157,22 @@ def process_rtt(path):
     
 
 
-path='./exp/cse_building/static/level3/'    
-process_rtt(path)
 
 
-path='./exp/cse_building/static/level1/'    
-process_rtt(path)
 
-#path='./exp/placeA/static/level1/'    #1m: first 2min05s opo data needs discard
-#process_rtt(path)
+def main():
+    #path='./exp/cse_building/static/level1/'    
+    #process_rtt(path)
+    
+    #path='./exp/cse_building/static/level3/'    
+    #process_rtt(path)
 
-#path='./exp/placeA/static/level3/'    #1m: first 2min05s opo data needs discard
-#process_rtt(path)
+    path='./exp/placeA/static/level1/'    #1m: first 2min05s opo data needs discard
+    process_rtt(path)
+
+    #path='./exp/placeA/static/level3/'    #1m: first 2min05s opo data needs discard
+    #process_rtt(path)
+
+if __name__ == "__main__":
+   # stuff only to run when not called via 'import' here
+   main()
