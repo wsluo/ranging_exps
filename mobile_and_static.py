@@ -140,6 +140,7 @@ def process_rtt(path, exp_type, fixed_point, ul_count_cutoff=40):
 
 
     tottag_raw=[x for x in tottag_raw if (x[0]>=interval_min and x[0]<=interval_max)]
+    tottag_rssi=[x for x in tottag_rssi if (x[0]>=interval_min and x[0]<=interval_max)]
     tottag_moments = [x[0] for x in tottag_raw]
     tottag_moments_offset = [x-interval_min for x in tottag_moments] 
     tottag_dist_tottag_moments = [x[2]/1000 for x in tottag_raw]
