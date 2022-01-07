@@ -367,9 +367,40 @@ def main():
     #path='./exp/placeA/level3_circle1_rtt_run4/'     ##missing some tottag data
     #process_rtt(path, 'circle_clock1', [0,-0.3780], ul_count_cutoff=65) 
 
-    path='./exp/placeA/level3_circle1_rtt_run6/'     ##missing some tottag data
-    process_rtt(path, 'circle_clock1', [0,-0.3615], ul_count_cutoff=65)
-
+    #path='./exp/placeA/level3_circle1_rtt_run6/'     ##missing some tottag data
+    #process_rtt(path, 'circle_clock1', [0,-0.3615], ul_count_cutoff=65)
+    
+    #path='./exp/placeB/level3_sideline2_rtt_run1/'
+    #process_rtt(path, 'sideline2', [0,-0.3775], ul_count_cutoff=65)
+    ##0.3775
+    
+    #path='./exp/placeB/level3_sideline2_rtt_run2/'
+    #process_rtt(path, 'sideline2', [0,-0.3690], ul_count_cutoff=65)
+    #03690
+    
+    #path='./exp/placeB/level3_sideline2_rtt_run3/'
+    #process_rtt(path, 'sideline2', [0,-0.3745], ul_count_cutoff=65)
+    
+    #path='./exp/placeB/level3_sideline2_rtt_run4/'
+    #process_rtt(path, 'sideline2', [0,-0.3700], ul_count_cutoff=65)
+    #0.3700
+    
+    #path='./exp/placeB/level3_circle1_rtt_run1/'    
+    #process_rtt(path, 'circle_clock1', [0,-0.3743], ul_count_cutoff=65)
+    #0.3743
+    
+    
+    #path='./exp/placeB/level3_circle1_rtt_run2/'    
+    #process_rtt(path, 'circle_clock1', [0,-0.3600], ul_count_cutoff=65)
+    #0.3600
+    
+    #path='./exp/placeB/level3_circle1_rtt_run3/'    
+    #process_rtt(path, 'circle_clock1', [0,-0.3625], ul_count_cutoff=65)
+    #0.3625
+    
+    #path='./exp/placeB/level3_circle1_rtt_run4/'    
+    #process_rtt(path, 'circle_clock1', [0,-0.3565], ul_count_cutoff=65)    
+    #0.3565
 if __name__ == "__main__":
    # stuff only to run when not called via 'import' here
    main()

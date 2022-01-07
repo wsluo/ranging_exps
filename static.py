@@ -167,11 +167,17 @@ def main():
     #path='./exp/cse_building/static/level3/'    
     #process_rtt(path)
 
-    path='./exp/placeA/static/level1/'    #1m: first 2min05s opo data needs discard
-    process_rtt(path)
+    #path='./exp/placeA/static/level1/'    #1m: first 2min05s opo data needs discard
+    #process_rtt(path)
 
     #path='./exp/placeA/static/level3/'    #1m: first 2min05s opo data needs discard
     #process_rtt(path)
+    
+    #path='./exp/placeB/static/level3/'    #1m: first 2min05s opo data needs discard
+    #process_rtt(path)
+    
+    path='./exp/placeB/static/level1/'    #1m: first 2min05s opo data needs discard
+    process_rtt(path)
 
 if __name__ == "__main__":
    # stuff only to run when not called via 'import' here

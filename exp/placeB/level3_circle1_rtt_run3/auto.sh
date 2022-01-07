@@ -1,8 +1,8 @@
 #!/bin/bash
 
-ntp_server=192.168.1.2
-left=192.168.1.2
-right=192.168.1.4
+ntp_server=192.168.0.102
+left=192.168.0.102
+right=192.168.0.101
 
 sudo sntp -Ss ${ntp_server}
 

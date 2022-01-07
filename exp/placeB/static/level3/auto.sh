@@ -1,5 +1,5 @@
 #!/bin/bash
-ntp_server=192.168.1.2
+ntp_server=192.168.0.102
 sudo sntp -Ss ${ntp_server} #1.2 is L machine. ntp server is running on 1.2
 
 current_time=$(date +%s)
