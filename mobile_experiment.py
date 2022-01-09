@@ -470,12 +470,45 @@ def main():
     #path='./exp/placeA/level3_rtt_run7/' #another junk
     #process_rtt(path,'clock_counter_2',0.3630,ul_count_cutoff=40)
 
-    path='./exp/placeA/level3_rtt_run8/' #more data
-    process_rtt(path,'clock_counter_2',0.3785,ul_count_cutoff=40)
+    #path='./exp/placeA/level3_rtt_run8/' #more data
+    #process_rtt(path,'clock_counter_2',0.3785,ul_count_cutoff=40)
     #0.3785
+    
+    #path='./exp/placeB/level1_rtt_run1/' #more data
+    #process_rtt(path,'clock_counter_2',0.3740,ul_count_cutoff=40)
+    #0.3740
+    
+    #path='./exp/placeB/level1_rtt_run2/' #more data
+    #process_rtt(path,'clock_counter_2',0.3690,ul_count_cutoff=40)
+    #0.3690
+    
+    
+    #path='./exp/placeB/level1_rtt_run3/' #more data
+    #process_rtt(path,'clock_counter_2',0.3620,ul_count_cutoff=40)    
+    #0.3620
 
+    #path='./exp/placeB/level1_rtt_run4/' #more data
+    #process_rtt(path,'clock_counter_2',0.3700,ul_count_cutoff=40)
+
+    #0.3700
     ## TODO  fix the right tottag? which always disconnect when moving
-
+    
+    
+    #path='./exp/placeB/level3_rtt_run1/' #more data
+    #process_rtt(path,'clock_counter_2',0.3805,ul_count_cutoff=40)
+    #0.3805
+    
+    #path='./exp/placeB/level3_rtt_run2/' #more data
+    #process_rtt(path,'clock_counter_2',0.3725,ul_count_cutoff=40)
+    #0.3725
+    
+    #path='./exp/placeB/level3_rtt_run3/' #more data
+    #process_rtt(path,'clock_counter_2',0.3695,ul_count_cutoff=40)
+    #0.3695
+    
+    path='./exp/placeB/level3_rtt_run4/' #more data
+    process_rtt(path,'clock_counter_2',0.3805,ul_count_cutoff=40)
+    #0.3805
 if __name__ == "__main__":
    # stuff only to run when not called via 'import' here
    main()

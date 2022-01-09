@@ -401,6 +401,43 @@ def main():
     #path='./exp/placeB/level3_circle1_rtt_run4/'    
     #process_rtt(path, 'circle_clock1', [0,-0.3565], ul_count_cutoff=65)    
     #0.3565
+    
+    #path='./exp/placeB/level1_sideline2_rtt_run1/'
+    #process_rtt(path, 'sideline2', [0,-0.3770], ul_count_cutoff=65)    
+    #0.3770
+    
+    #path='./exp/placeB/level1_sideline2_rtt_run2/'
+    #process_rtt(path, 'sideline2', [0,-0.3690], ul_count_cutoff=65)
+    #0.3690
+    
+    
+    #path='./exp/placeB/level1_sideline2_rtt_run3/'
+    #process_rtt(path, 'sideline2', [0,-0.3680], ul_count_cutoff=65)
+    #0.3680
+    
+    #path='./exp/placeB/level1_sideline2_rtt_run4/'
+    #process_rtt(path, 'sideline2', [0,-0.3655], ul_count_cutoff=65)
+    #0.3655
+    
+    #path='./exp/placeB/level1_sideline2_rtt_run5/'
+    #process_rtt(path, 'sideline2', [0,-0.3660], ul_count_cutoff=65)
+    #0.3660
+    
+    #path='./exp/placeB/level1_circle1_rtt_run1/'    
+    #process_rtt(path, 'circle_clock1', [0,-0.3695], ul_count_cutoff=65)
+    #0.3695
+    
+    #path='./exp/placeB/level1_circle1_rtt_run2/'    
+    #process_rtt(path, 'circle_clock1', [0,-0.3670], ul_count_cutoff=65)
+    #0.3670
+    
+    #path='./exp/placeB/level1_circle1_rtt_run3/'    
+    #process_rtt(path, 'circle_clock1', [0,-0.3650], ul_count_cutoff=65)
+    #0.3650
+    
+    #path='./exp/placeB/level1_circle1_rtt_run4/'    
+    #process_rtt(path, 'circle_clock1', [0,-0.3715], ul_count_cutoff=65)    
+    #0.3715
 if __name__ == "__main__":
    # stuff only to run when not called via 'import' here
    main()
