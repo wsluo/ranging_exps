@@ -46,7 +46,7 @@ def process_rtt(path):
     
     distances=[]
     for f in allfiles:
-        if f.startswith('capture'):
+        if f.startswith('capture') and f.endswith('.pcapng'):
             suf=f.split('_')[1][:-7].strip()
             distances.append(suf)
     distances=list(sorted(distances))
@@ -176,7 +176,10 @@ def main():
     #path='./exp/placeB/static/level3/'   
     #process_rtt(path)
     
-    path='./exp/placeB/static/level1/'    
+    #path='./exp/placeB/static/level1/'    
+    #process_rtt(path)
+    
+    path='./exp/cse_corridor/static/level3/'    
     process_rtt(path)
 
 if __name__ == "__main__":

@@ -66,7 +66,7 @@ def get_range_and_ul_count(filename, ul_count_cutoff):
             
 #for quickplot
 def quickplot_shark(filename):
-    out=get_range_and_ul_count(filename)
+    out=get_range_and_ul_count(filename,30)
     timestamps=[x[0] for x in out]
     timestamps=[x-timestamps[0] for x in timestamps]
     dists=[x[-1] for x in out]
@@ -89,5 +89,5 @@ def quickplot_shark(filename):
 #quickplot_shark('./exp/cse_building/level3_run2/capture.pcapng')
 #quickplot_shark('./exp/cse_building/level3_circle1_run2/capture.pcapng')
 #quickplot_shark('./exp/cse_building/static/level3/capture_7.pcapng')
-
+#quickplot_shark('./exp/cse_corridor/static/level3/capture_7.pcapng')
 
