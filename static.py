@@ -152,7 +152,7 @@ def process_rtt(path):
        
     plt.legend()
     plt.tight_layout()
-    plt.savefig(path+'aligned_concat.png')
+    plt.savefig(path+'aligned_concat.png',dpi=300)
     plt.show()
     
 
@@ -179,8 +179,8 @@ def main():
     #path='./exp/placeB/static/level1/'    
     #process_rtt(path)
     
-    path='./exp/cse_corridor/static/level3/'    
-    process_rtt(path)
+    #path='./exp/cse_corridor/static/level3/'    
+    #process_rtt(path)
 
 if __name__ == "__main__":
    # stuff only to run when not called via 'import' here

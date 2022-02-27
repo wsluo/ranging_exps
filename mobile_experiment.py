@@ -300,20 +300,21 @@ def process_rtt(path, exp_type, h_offset, ul_count_cutoff=40):
     ax3.legend()
     ax3.title.set_text('Opo, Tottag vs Groundtruth')
     plt.tight_layout()
-    plt.savefig(path+'aligned.png')
+    plt.savefig(path+'aligned.png',dpi=300)
     plt.show()
 
     plt.scatter([a[0]-interval_min for a in tottag_rssi],[a[1] for a in tottag_rssi])
     plt.title('RSSI')
     plt.xlabel('Time (s)')
+    plt.savefig(path+'RSSI.png',dpi=300)
     plt.show()
     
     #plt.hist(opo_error, cumulative=True, label='opo error CDF', histtype='step', alpha=0.8)
     cdf([abs(x) for x in opo_error],label='opo error CDF')
     cdf([abs(x) for x in tottag_error],label='tottag error CDF')  
-    plt.xlabel('Absolute Error (m)')         
-    plt.savefig(path+'error_cdf.png')
-    plt.legend()
+    plt.xlabel('Absolute Error (m)')  
+    plt.legend()       
+    plt.savefig(path+'error_cdf.png',dpi=300)
     plt.show()
 
 def main():
@@ -392,8 +393,8 @@ def main():
     '''
 
 
-    #path='./exp/cse_building/level3_rtt_run1/' #this run, the opo monitor starts a bit later
-    #process_rtt(path,'clock_counter_2',0.3725,ul_count_cutoff=40)
+    path='./exp/cse_building/level3_rtt_run1/' #this run, the opo monitor starts a bit later
+    process_rtt(path,'clock_counter_2',0.3725,ul_count_cutoff=40)
 
     
 
@@ -506,8 +507,8 @@ def main():
     #process_rtt(path,'clock_counter_2',0.3695,ul_count_cutoff=40)
     #0.3695
     
-    path='./exp/placeB/level3_rtt_run4/' #more data
-    process_rtt(path,'clock_counter_2',0.3805,ul_count_cutoff=40)
+    #path='./exp/placeB/level3_rtt_run4/' #more data
+    #process_rtt(path,'clock_counter_2',0.3805,ul_count_cutoff=40)
     #0.3805
 if __name__ == "__main__":
    # stuff only to run when not called via 'import' here
